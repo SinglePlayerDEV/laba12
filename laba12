@@ -9,9 +9,10 @@ using namespace std;
 
 string namef;
 
-struct student
+class student
 {
-	string surname;
+public:	
+        string surname;
 	string name;
 	string surname1;
 	string gender;
