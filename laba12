@@ -1,0 +1,389 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <stdlib.h>
+#include <windows.h>
+
+using namespace std;
+
+string namef;
+
+struct student
+{
+	string surname;
+	string name;
+	string surname1;
+	string gender;
+	int rost;
+};
+ostream& operator <<(ostream& os, student& st) 
+{
+	os << st.name << " " << st.surname << " " << st.surname1 << " " << st.gender << " " << st.rost << " "; 
+	return os;
+}
+istream& operator >>(istream& is, student& st)
+{
+	is >> st.name >> st.surname >> st.surname1 >> st.gender >> st.rost;
+	return is;
+}
+void variant()
+{
+	cout << "1. ввести новые данные в файл" << endl;
+	cout << "2. загрузить все данные из файла" << endl;
+	
+	cout << "3. добавить данные в конец файла" << endl;
+	cout << "4. сортировка по алфавиту" << endl;
+	cout << "5. сортировка по росту" << endl;
+
+	cout << "6. вычисления: средний рост женщин" << endl;
+	cout << "7. самый высокий мужчина" << endl;
+	cout << "0. выход" << endl;
+}
+
+void file()
+{
+	ofstream f;
+	int size;
+	cout << "введите название файла" << endl;
+	cin >> namef;
+	f.open(namef);
+	if (!f.is_open()) 
+	{
+		cout << "ошибочка";
+	}
+	else 
+	{
+
+		cout << "файл открыт, записывай" << endl;
+		cout << "введите кол-во студентов, которых нужно ввести. Их пол и возраст. " << endl;
+		cin >> size;
+		student* arr = new student[size];
+		SetConsoleCP(1251);
+		for (int i = 0; i < size; i++)
+		{
+			cout << "введите фамилию студента " << endl;
+			cin >> arr[i].surname;
+			cout << "введите имя студента " << endl;
+			cin >> arr[i].name;
+			cout << "введите отчество студента " << endl;
+			cin >> arr[i].surname1;
+			cout << "введите пол студента" << endl;
+			cin >> arr[i].gender;
+			cout << "введите рост студента" << endl;
+			cin >> arr[i].rost;
+		}
+		for (int i = 0; i < size; i++)
+		{
+			f << arr[i] << endl;
+		}
+		SetConsoleCP(866);
+		delete[] arr;
+	}
+	f.close();
+}
+void read()
+{
+	ifstream f;
+	cout << "введите название файла" << endl;
+	cin >> namef;
+	f.open(namef);
+	if (!f.is_open()) 
+	{
+		cout << "ошибочка";
+	}
+	else {
+		cout << "Файл открыт для чтения" << endl;
+		while (true)
+		{
+			student r;
+			f >> r;
+			if (f.eof()) 
+			{
+				break;
+			}
+			cout  << r.surname;
+			cout << "\t" << r.name;
+			cout << "\t" << r.surname1;
+			cout << "\t" << r.gender;
+			cout << "\t" << r.rost<<endl;
+		}
+	}
+	f.close();
+}
+void input()
+{//вставка
+	ofstream f;
+	int size;
+	cout << "введите название файла" << endl;
+	cin >> namef;
+	f.open(namef, ofstream::app);
+	if (!f.is_open()) 
+	{
+		cout << "ошибочка";
+	}
+	else 
+	{
+		cout << "файл открыт, записывай" << endl;
+		cout << "введите кол-во студентов, которых нужно ввести. Их пол и возраст. " << endl;
+		cin >> size;
+		student* arr = new student[size];
+		SetConsoleCP(1251);
+		for (int i = 0; i < size; i++)
+		{
+			cout << "введите фамилию студента " << endl;
+			cin >> arr[i].surname;
+			cout << "введите имя студента " << endl;
+			cin >> arr[i].name;
+			cout << "введите отчество студента " << endl;
+			cin >> arr[i].surname1;
+			cout << "введите пол студента" << endl;
+			cin >> arr[i].gender;
+			cout << "введите рост студента" << endl;
+			cin >> arr[i].rost;
+		}
+		for (int i = 0; i < size; i++)
+		{
+			f << arr[i] << endl;
+		}
+		SetConsoleCP(866);
+		delete[] arr;
+	}
+	f.close();
+}
+ 
+void sort() {
+	ifstream f;
+	int value = 0;
+	cout << "введите имя файла" << endl;
+	cin >> namef;
+	f.open(namef);
+	if (!f.is_open()) {
+		cout << "ошибка" << endl;
+	}
+	else
+	{
+		while (true) 
+		{
+			student sort;
+			f >> sort;
+			if (f.eof())
+			{
+				break;
+			}
+			value++;
+		}
+		f.close();
+		f.open(namef);
+
+		student* sort = new student[value];
+		for (int i = 0; i < value; i++) {
+			f >> sort[i];
+		}
+		f.close();
+		for (int i = 0; i < value - 1; i++) //сортировка пузырьком
+		{
+			for (int j = 0; j < value - i - 1; j++) 
+			{
+				if (sort[j].surname > sort[j + 1].surname)
+				{
+					swap(sort[j], sort[j + 1]);
+				}
+			}
+
+		}
+		ofstream a;
+		a.open(namef);
+		for (int i = 0; i < value; i++) 
+		{
+			a << sort[i] << endl;
+		}
+		a.close();
+	}	
+	
+
+}
+void sort1() 
+{
+	ifstream f;
+	int value = 0;
+	cout << "введите имя файла" << endl;
+	cin >> namef;
+	f.open(namef);
+	if (!f.is_open()) {
+		cout << "ошибка" << endl;
+	}
+	else
+	{
+		while (true)
+		{
+			student sorti;
+			f >> sorti;
+			if (f.eof())
+			{
+				break;
+			}
+			value++;
+		}
+		f.close();
+		f.open(namef);
+
+		student* sorti = new student[value];
+		for (int i = 0; i < value; i++) {
+			f >> sorti[i];
+		}
+		f.close();
+		for (int i = 0; i < value - 1; i++) //сортировка пузырьком
+		{
+			for (int j = 0; j < value - i - 1; j++)
+			{
+				if (sorti[j].rost < sorti[j + 1].rost)
+				{
+					swap(sorti[j], sorti[j + 1]);
+				}
+			}
+
+		}
+		ofstream a;
+		a.open(namef);
+		for (int i = 0; i < value; i++)
+		{
+			a << sorti[i] << endl;
+		}
+		a.close();
+	}
+
+
+}
+
+void avwom() 
+{// средний рост женщин
+	ifstream f;
+	int Wrost;
+	int sum = 0;
+	int j = 0;
+	int kolvo = 0;
+	cout << "введите имя файла" << endl;
+	cin >> namef;
+	f.open(namef);
+	if (!f.is_open())
+	{
+		cout << "ошибка" << endl;
+	}
+	else {
+		cout << "Файл открыт" << endl;
+		while (true) 
+		{
+			student women;
+			f >> women;
+			if (f.eof())
+			{
+				break;
+			}
+			kolvo++;
+		}
+		f.close();
+		f.open(namef);
+		student* women = new student[kolvo];
+		for (int i = 0; i < kolvo; i++)
+		{
+			f >> women[i];
+			if (women[i].gender == "F")
+			{
+				sum += women[i].rost;
+				j++;
+			}
+		}
+		Wrost = sum / j;
+		cout << "средний рост женщин: " << Wrost << endl;
+		f.close();
+	}
+}
+
+	void hight() 
+	{// имя самого высокого мужчины
+		ifstream f;
+		int ind;
+		int kolvo1 = 0;
+		int max = 0;
+		cout << "введите название файла" << endl;
+		cin >> namef;
+		f.open(namef);
+		if (!f.is_open())
+		{
+			cout << "ошибка" << endl;
+		}
+		else {
+			while (true)
+			{
+				student men;
+				f >> men;
+				if (f.eof()) 
+				{
+					break;
+				}
+				kolvo1++;
+			}
+			f.close();
+			f.open(namef);
+			student* men = new student[kolvo1];
+			for (int i = 0; i < kolvo1; i++) 
+			{
+				f >> men[i];
+				if (men[i].gender == "M") 
+				{
+					if (men[i].rost > max) 
+					{
+						max = men[i].rost;
+						ind = i;
+					}
+				}
+			}
+			cout <<"имя самого высокого мужчины: " << men[ind].name << endl;
+		}
+		f.close();
+	}
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	bool proverka = true;
+
+	do {
+		
+		int v;
+		variant();
+		cout << "введите один из вариантов" << endl;
+		cin >> v;
+		switch (v) {
+		case 1:
+			file();
+			break;
+		case 2:
+			read();
+			break;
+		case 3:
+			input();
+			break;
+		case 4:
+			sort();
+			break;
+		case 5:
+			sort1();
+			break;
+		case 6:
+			avwom();
+		    break;
+		case 7:
+			hight();
+			break;
+		case 0:
+			proverka = false;
+			break;
+		default:
+			break;
+		}
+	} while (proverka);
+	return 0;
+}
